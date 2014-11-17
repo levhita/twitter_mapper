@@ -9,8 +9,10 @@ import ConfigParser
 class StdOutListener(tweepy.StreamListener):
     def on_data(self, data):
         global db
+        
         decoded = json.loads(data)
         db.twitts.insert(decoded)
+        
         # Ignorar caracteres no ASCII
         print '@%s: %s' % (decoded['user']['screen_name'], decoded['text'].encode('ascii', 'ignore'))
         # twitter_mapper.twitts
@@ -35,7 +37,7 @@ if __name__ == '__main__':
     auth = tweepy.OAuthHandler(config.get('twitter', 'consumer_key'), config.get('twitter', 'consumer_secret'))
     auth.set_access_token(config.get('twitter', 'access_token'), config.get('twitter', 'access_token_secret'))
     
-    print "Capturing Twitts"
+    print "Collecting Twitts"
 
     # Existen diversos tipos de streams: public stream, user stream, multi-user streams
     # Mas detalles en https://dev.twitter.com/docs/streaming-apis
