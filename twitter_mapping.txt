@@ -1,0 +1,9 @@
+id_str -> id_str
+text -> text
+timestamp_ms -> timestamp_ms
+geo.coordinates[0] -> latitude
+geo.coordinates[1] -> longitude
+user.id -> user_id
+user.name-> user_name
+user.screen_name -> screen_name
+user.profile_image_url_https->picture
