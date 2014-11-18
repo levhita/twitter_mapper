@@ -1,5 +1,5 @@
 TwitterCollector/config.ini
-
+.env
 # Logs
 logs
 *.log
