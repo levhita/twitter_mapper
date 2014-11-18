@@ -1,4 +1,4 @@
-var url         = "mongodb://localhost:27017/twitter_mapper"
+var url         = process.env.CONNECTION_STRING;
 var MongoClient = require('mongodb').MongoClient;
 var db          = null;
 
