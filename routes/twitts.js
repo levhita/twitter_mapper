@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/', function(req, res) {
 	var twitts = db.collection('twitts');
 	var data = [];
-	var options = {"limit": 500, 'sort': [['_id', 'desc']]};
+	var options = {"limit": 3000, 'sort': [['_id', 'desc']]};
 	
 	twitts.find({}, options, function(err, twitts) {
 		twitts.each(function(err, twitt) {

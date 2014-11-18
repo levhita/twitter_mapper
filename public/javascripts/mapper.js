@@ -14,15 +14,16 @@ function initialize() {
 
 $(document).ready(function(){
 	initialize();
+	var iconBase = 'http://maps.google.com/mapfiles/kml/shapes';
 	$.getJSON( "twitts", function( twitts ) {
 		$.each( twitts, function(key, twitt) {
-			console.log(twitt);
 			if(twitt.coordinates!==null) {
 				var myLatlng = new google.maps.LatLng(twitt.coordinates.coordinates[1], twitt.coordinates.coordinates[0])
 				marker = new google.maps.Marker({
 					position: myLatlng,
 					map: map,
-					title: "@"+twitt.user.screen_name+":"+twitt.text
+					title: "@"+twitt.user.screen_name+":"+twitt.text,
+					icon: 'images/FF4D00-0.8.png'
 				});
 			}
 		});
