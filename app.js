@@ -59,7 +59,7 @@ app.use(function(err, req, res, next) {
 var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 
-MongoClient.connect('mongodb://localhost:27017/twitter_mapper', function(err, db) {
+MongoClient.connect(process.env.CONNECTION_STRING, function(err, db) {
   assert.equal(null, err);
   console.log("Connected correctly to server");
   global.db = db
