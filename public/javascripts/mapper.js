@@ -4,6 +4,7 @@ var dragging = false;
 var rect;
 var pos1, pos2;
 var currentLatLng, latLng1, latLng2;
+var twitt_collection=[];
 
 function initialize() {
 	
@@ -101,17 +102,29 @@ function deleteMarkers() {
 $(document).ready(function(){
 	initialize();
 	var iconBase = 'http://maps.google.com/mapfiles/kml/shapes';
+	var sizeScaled = new google.maps.Size(24,24);
+	var sizeNormal = new google.maps.Size(48,48);
+	
 	$.getJSON( "twitts", function( twitts ) {
 		$.each( twitts, function(key, twitt) {
+			var pinIcon = new google.maps.MarkerImage(twitt.picture, sizeNormal, null, null, sizeScaled);
 			if(twitt.coordinates!==null) {
 				var myLatlng = new google.maps.LatLng(twitt.latitude, twitt.longitude)
-				marker = new google.maps.Marker({
+				var marker = new google.maps.Marker({
 					position: myLatlng,
 					map: map,
 					title: "@"+twitt.screen_name+":"+twitt.text,
-					icon: twitt.picture//'images/FF4D00-0.8.png'
+					icon: pinIcon,
+					id_str: twitt.id_str
 				});
-				markers.push(marker);
+				
+				console.log(twitt.id_str);
+				google.maps.event.addListener(marker, 'click', function() {
+					window.open('https://twitter.com/a/status/'+marker.id_str);
+					console.log(marker.id_str);
+				});
+
+				twitt_collection.push({'twitt':twitt, 'marker':marker});
 			}
 		});
 	});
