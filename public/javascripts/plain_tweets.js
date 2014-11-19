@@ -20,6 +20,7 @@ $(document).ready(function(){
 	
 	$.getJSON( query_url, function( tweets ) {
 		$.each( tweets, function(key, tweet) {
+			
 			var pinIcon = new google.maps.MarkerImage(tweet.picture, sizeNormal, null, null, sizeScaled);
 			
 			var myLatlng = new google.maps.LatLng(tweet.latitude, tweet.longitude)
