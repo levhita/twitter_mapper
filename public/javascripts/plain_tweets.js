@@ -18,7 +18,7 @@ $(document).ready(function(){
 	var sizeScaled = new google.maps.Size(24,24);
 	var sizeNormal = new google.maps.Size(48,48);
 	
-	$.getJSON( "tweets", function( tweets ) {
+	$.getJSON( "/tweets?limit=1000", function( tweets ) {
 		$.each( tweets, function(key, tweet) {
 			var pinIcon = new google.maps.MarkerImage(tweet.picture, sizeNormal, null, null, sizeScaled);
 			if(tweet.coordinates!==null) {

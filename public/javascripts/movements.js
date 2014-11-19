@@ -1,10 +1,11 @@
 var map;
-var markers=[];
+var tweets_collection=[];
+
 var dragging = false;
 var rect;
 var pos1, pos2;
-var currentLatLng, latLng1, latLng2;
-var twitt_collection=[];
+var currentLatLng;
+var latLng1, latLng2;
 
 function initialize() {
 	
@@ -26,13 +27,13 @@ function initialize() {
 		} 
 	});*/
 
-	google.maps.event.addListener(map, 'mousemove', function(mEvent) {
+	/**google.maps.event.addListener(map, 'mousemove', function(mEvent) {
 		currentLatLng = mEvent.latLng;
 		if (dragging) {
 			latLng2 = mEvent.latLng;
 			showRect();
 		}
-	});
+	}); **/
 
 	/*google.maps.event.addDomListener(document.getElementById('map-canvas'), "mouseup", function (e) {
 		if (e.which == 1) {
@@ -54,6 +55,34 @@ function initialize() {
 		}
 	});*/
 }
+
+$(document).ready(function(){
+	initialize();
+	var iconBase = 'http://maps.google.com/mapfiles/kml/shapes';
+	
+	$.getJSON( "tweets?limit=3000", function( tweets ) {
+		$.each(tweets, function(key, tweet) {
+			
+			if(tweet.coordinates!==null) {
+				var myLatlng = new google.maps.LatLng(tweet.latitude, tweet.longitude)
+				var marker = new google.maps.Marker({
+					position: myLatlng,
+					map: map,
+					title: "@"+tweet.screen_name+":"+tweet.text,
+					icon: '/images/broad.png',
+					id_str: tweet.id_str
+				});
+				
+				google.maps.event.addListener(marker, 'click', function() {
+					window.open('https://twitter.com/a/status/'+marker.id_str);
+					console.log(marker.id_str);
+				});
+
+				tweets_collection.push({'tweet':tweet, 'marker':marker});
+			}
+		});
+	});
+});
 
 function showRect() {
 	if(dragging){
@@ -98,34 +127,3 @@ function deleteMarkers() {
 	clearMarkers();
 	markers = [];
 }
-
-$(document).ready(function(){
-	initialize();
-	var iconBase = 'http://maps.google.com/mapfiles/kml/shapes';
-	var sizeScaled = new google.maps.Size(24,24);
-	var sizeNormal = new google.maps.Size(48,48);
-	
-	$.getJSON( "twitts", function( twitts ) {
-		$.each( twitts, function(key, twitt) {
-			var pinIcon = new google.maps.MarkerImage(twitt.picture, sizeNormal, null, null, sizeScaled);
-			if(twitt.coordinates!==null) {
-				var myLatlng = new google.maps.LatLng(twitt.latitude, twitt.longitude)
-				var marker = new google.maps.Marker({
-					position: myLatlng,
-					map: map,
-					title: "@"+twitt.screen_name+":"+twitt.text,
-					icon: pinIcon,
-					id_str: twitt.id_str
-				});
-				
-				console.log(twitt.id_str);
-				google.maps.event.addListener(marker, 'click', function() {
-					window.open('https://twitter.com/a/status/'+marker.id_str);
-					console.log(marker.id_str);
-				});
-
-				twitt_collection.push({'twitt':twitt, 'marker':marker});
-			}
-		});
-	});
-});

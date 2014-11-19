@@ -1,13 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{title}}</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-  </head>
-  <body>
+<head>
+  <title>Twitter Mapper</title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">Twitter Mapper</a>
+      </div>
+      
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="/graphs/movements">Movements</a></li>
+          <li><a href="/graphs/plain_tweets">Plain Tweets</a></li>
+          <li><a href="/graphs/intesity">Intensity</a><li>
+          <li><a href="/graphs/intesity_small">Intensity Small</a><li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  
+  <div class="container" id="body">  
     {{{body}}}
-  </body>
+  </div>
+
+</body>
 </html>
