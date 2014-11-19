@@ -23,6 +23,14 @@ router.get('/', function(req, res) {
 		}
 	}
 	
+	if(typeof req.query.user_id !=='undefined'){
+		query.user_id = req.query.user_id;
+	}
+	
+	if(typeof req.query.screen_name !=='undefined'){
+		query.screen_name = req.query.screen_name;
+	}
+	
 	tweets_collection.find(query, options, function(err, tweets) {
 		tweets.each(function(err, tweet) {
 			if (tweet !== null) {

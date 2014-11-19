@@ -22,6 +22,7 @@ $(document).ready(function(){
 		$.each( tweets, function(key, tweet) {
 			var pinIcon = new google.maps.MarkerImage(tweet.picture, sizeNormal, null, null, sizeScaled);
 			if(tweet.coordinates!==null) {
+				
 				var myLatlng = new google.maps.LatLng(tweet.latitude, tweet.longitude)
 				var marker = new google.maps.Marker({
 					position: myLatlng,
