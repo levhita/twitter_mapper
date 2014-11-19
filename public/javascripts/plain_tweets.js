@@ -14,13 +14,12 @@ function initialize() {
 
 $(document).ready(function(){
 	initialize();
-	var iconBase = 'http://maps.google.com/mapfiles/kml/shapes';
 	var sizeScaled = new google.maps.Size(24,24);
-	var sizeNormal = new google.maps.Size(48,48);
+	var sizeNormal = new google.maps.Size(24,24);
 	
 	$.getJSON( query_url, function( tweets ) {
 		$.each( tweets, function(key, tweet) {
-			
+
 			var pinIcon = new google.maps.MarkerImage(tweet.picture, sizeNormal, null, null, sizeScaled);
 			
 			var myLatlng = new google.maps.LatLng(tweet.latitude, tweet.longitude)
