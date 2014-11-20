@@ -33,18 +33,35 @@ $(document).ready(function(){
 				||  (last_location.longitude+0.005 < tweet.longitude)
 				||  (last_location.longitude-0.005 > tweet.longitude) ){
 					
+					var lineSymbol = {
+            			path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
+            			strokeColor: 'purple',
+            			strokeOpacity: 0.2,
+            		};
+
 					var points = [
 						new google.maps.LatLng(last_location.latitude,last_location.longitude),
 						new google.maps.LatLng(tweet.latitude,tweet.longitude)
 					];
 					
-					var polyline = new google.maps.Polyline( {map: map,path:points,strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});
+					var polyline = new google.maps.Polyline({
+						map: map,
+						path:points,strokeColor:"blue",
+						strokeWeight:3,
+						strokeOpacity:0.1,
+						icons: [{
+                			icon: lineSymbol,
+                			offset: '100%'
+            			}]
+					});
+					
+					
 					
 					tweets_locations[tweet.user_id].push({'latitude':tweet.latitude, 'longitude':tweet.longitude});
 					
-					var pinIcon = new google.maps.MarkerImage(tweet.picture, sizeNormal, null, centerImage, sizeScaled);
+					//var pinIcon = new google.maps.MarkerImage(tweet.picture, sizeNormal, null, centerImage, sizeScaled);
 					
-					var myLatlng = new google.maps.LatLng(tweet.latitude, tweet.longitude)
+					/*var myLatlng = new google.maps.LatLng(tweet.latitude, tweet.longitude)
 					var marker = new google.maps.Marker({
 						position: myLatlng,
 						map: map,
@@ -52,9 +69,9 @@ $(document).ready(function(){
 						icon: pinIcon
 					});
 				
-					tweets_collection.push({'tweet':tweet, 'marker':marker});
+					tweets_collection.push({'tweet':tweet, 'marker':marker});*/
 					if(tweets_locations[tweet.user_id].length==2){
-						var myLatlng = new google.maps.LatLng(last_location.latitude, last_location.longitude)
+						/*var myLatlng = new google.maps.LatLng(last_location.latitude, last_location.longitude)
 						var marker = new google.maps.Marker({
 							position: myLatlng,
 							map: map,
@@ -62,7 +79,7 @@ $(document).ready(function(){
 							icon: pinIcon
 						});
 					
-						tweets_collection.push({'tweet':tweet, 'marker':marker});
+						tweets_collection.push({'tweet':tweet, 'marker':marker});*/
 					}
 				}
 			}

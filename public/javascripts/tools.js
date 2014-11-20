@@ -17,11 +17,11 @@ if($.urlParam('limit')!==null){
 } else {
 	query_url += "?limit=1000";
 }
-if($.urlParam('younger_than')!==null){
-	query_url += "&younger_than="+$.urlParam('younger_than');
-}
 if($.urlParam('older_than')!==null){
 	query_url += "&older_than="+$.urlParam('older_than');
+}
+if($.urlParam('younger_than')!==null){
+	query_url += "&younger_than="+$.urlParam('younger_than');
 }
 
 if($.urlParam('user_id')!==null){

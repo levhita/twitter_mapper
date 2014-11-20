@@ -13,13 +13,18 @@ router.get('/', function(req, res) {
 	}
 
 	if( (typeof req.query.older_than !=='undefined') && (typeof req.query.younger_than !=='undefined') ){
-		query.timestamp_ms = { $gt :  req.query.older_than, $lt : req.query.younger_than};
+		var older_than = (parseInt(req.query.older_than) + (6*60*60)) + '000';
+		var younger_than = (parseInt(req.query.younger_than) + (6*60*60)) +'000';
+		console.log(older_than, younger_than);
+		query.timestamp_ms = { $gt :  older_than, $lt : younger_than};
 	} else {
 		if(typeof req.query.younger_than !=='undefined'){
-			query.timestamp_ms = {$lt : req.query.younger_than};
+			var younger_than = (parseInt(req.query.younger_than) + (6*60*60))+'000';
+			query.timestamp_ms = {$lt : younger_than};
 		}
 		if(typeof req.query.older_than !=='undefined'){
-			query.timestamp_ms = {$gt : req.query.older_than};
+			var older_than = (parseInt(req.query.older_than) + (6*60*60))+ '000';
+			query.timestamp_ms = {$gt : older_than};
 		}
 	}
 	
