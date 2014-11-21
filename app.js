@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var tweets = require('./routes/tweets');
 var graphs = require('./routes/graphs');
+var movements = require('./routes/movements');
+var movement_tweets = require('./routes/movement_tweets');
 
 var app = express();
 
@@ -26,6 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/tweets', tweets);
 app.use('/graphs', graphs);
+app.use('/movements', movements);
+app.use('/movement_tweets', movement_tweets);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

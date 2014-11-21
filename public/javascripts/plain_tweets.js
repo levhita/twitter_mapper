@@ -5,7 +5,7 @@ $(document).ready(function(){
 	var sizeScaled = new google.maps.Size(24,24);
 	var sizeNormal = new google.maps.Size(24,24);
 	var centerImage = new google.maps.Point(12,12);
-	$.getJSON( query_url, function( tweets ) {
+	$.getJSON( "/"+query_url, function( tweets ) {
 		$.each( tweets, function(key, tweet) {
 
 			var pinIcon = new google.maps.MarkerImage(tweet.picture, sizeNormal, null, centerImage, sizeScaled);

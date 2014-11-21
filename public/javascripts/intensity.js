@@ -6,7 +6,7 @@ $(document).ready(function(){
 		icon = $.urlParam('icon');
 	}
 	
-	$.getJSON( query_url, function( tweets ) {
+	$.getJSON( "/"+query_url, function( tweets ) {
 		$.each(tweets, function(key, tweet) {
 			var myLatlng = new google.maps.LatLng(tweet.latitude, tweet.longitude)
 			var marker = new google.maps.Marker({

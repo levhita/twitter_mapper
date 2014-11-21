@@ -10,8 +10,8 @@ $.urlParam = function(name){
 	}
 }
 
-var query_url = "/tweets";
-/** Basic filters **/
+var query_url = "tweets";
+
 if($.urlParam('limit')!==null){
 	query_url += "?limit="+$.urlParam('limit');
 } else {
@@ -23,19 +23,15 @@ if($.urlParam('older_than')!==null){
 if($.urlParam('younger_than')!==null){
 	query_url += "&younger_than="+$.urlParam('younger_than');
 }
-
 if($.urlParam('user_id')!==null){
 	query_url += "&user_id="+$.urlParam('user_id');
 }
-
 if($.urlParam('screen_name')!==null){
 	query_url += "&screen_name="+$.urlParam('screen_name');
 }
-
 if($.urlParam('as_text')!==null && $.urlParam('as_text')=="true"){
 	query_url += "&as_text=true"
 }
-
 if($.urlParam('search')!==null){
 	query_url += "&search="+$.urlParam('search');
 }
