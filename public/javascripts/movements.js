@@ -4,6 +4,7 @@ var tweets_locations={};
 if($.urlParam('direction')!==null){
 	query_url += "&direction="+$.urlParam('direction');
 }
+
 query_url = "/movement_" + query_url;
 
 $(document).ready(function(){

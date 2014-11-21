@@ -50,10 +50,10 @@ router.get('/', function(req, res) {
 	}
 
 	if ( typeof req.query.region_lat1 !=='undefined' && typeof req.query.region_lng1 !=='undefined' && typeof req.query.region_lat2 !=='undefined' && typeof req.query.region_lng2 !=='undefined' ) {
-		var region1 = {'latitude': req.query.region_lat1, 'longitude': req.query.region_lng1};
-		var region2 = {'latitude': req.query.region_lat2, 'longitude': req.query.region_lng2};
+		var region1 = {'latitude': parseFloat(req.query.region_lat1), 'longitude': parseFloat(req.query.region_lng1)};
+		var region2 = {'latitude': parseFloat(req.query.region_lat2), 'longitude': parseFloat(req.query.region_lng2)};
 	}
-
+	
 	tweets_collection.find(query, options, function(err, tweets) {
 		var tweets_locations = [];
 		var lines = [];
@@ -61,6 +61,9 @@ router.get('/', function(req, res) {
 		tweets.each( function(err, tweet) {
 
 			if (tweet !== null) {
+				tweet.latitude = parseFloat(tweet.latitude);
+				tweet.longitude = parseFloat(tweet.longitude);
+
 				if(typeof tweets_locations[tweet.user_id] == 'undefined'){
 					/** First locations known for this user **/
 					tweets_locations[tweet.user_id]=[{
@@ -85,6 +88,52 @@ router.get('/', function(req, res) {
 			} else {	
 				
 				if ( typeof region1 !== 'undefined' ) { 
+
+					for (var user_id in tweets_locations) {
+						
+						if (user_id === 'length' || !tweets_locations.hasOwnProperty(user_id)){continue;}
+						if(tweets_locations[user_id].length==1){continue;}
+						
+						for (i=0; i<tweets_locations[user_id].length;i++) {
+							
+							if (tweets_locations[user_id][i].latitude  > region1.latitude && tweets_locations[user_id][i].latitude  < region2.latitude && tweets_locations[user_id][i].longitude > region1.longitude && tweets_locations[user_id][i].longitude < region2.longitude) {
+
+								if (direction=='both') {
+									if ( i>0 ) {
+										if ( lines.length==0 ) { //first line
+											lines.push({
+												'start': tweets_locations[user_id][i-1],
+												'end': tweets_locations[user_id][i],
+											});
+										} else if(lines[lines.length-1].end.latitude  !== tweets_locations[user_id][i].latitude && lines[lines.length-1].end.longitude !== tweets_locations[user_id][i].longitude){
+											lines.push({
+												'start': tweets_locations[user_id][i-1],
+												'end': tweets_locations[user_id][i],
+											});
+										}
+									}
+								}
+
+								if (direction == 'in') {
+									if ( i>0 ) {
+										lines.push({
+											'start': tweets_locations[user_id][i-1],
+											'end': tweets_locations[user_id][i],
+										});
+									}
+								}
+								
+								if (direction == 'out' || direction == 'both') {
+									if ( i<tweets_locations[user_id].length-1 ) {
+										lines.push({
+											'start': tweets_locations[user_id][i],
+											'end': tweets_locations[user_id][i+1],
+										});
+									}
+								}
+							}
+						}
+					}
 
 				} else {
 					for (var user_id in tweets_locations) {
