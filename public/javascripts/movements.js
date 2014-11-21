@@ -5,11 +5,18 @@ if($.urlParam('direction')!==null){
 	query_url += "&direction="+$.urlParam('direction');
 }
 
+var intensity=false;
+if($.urlParam('intensity')!==null){
+	intensity = true;
+}
+
 query_url = "/movement_" + query_url;
 
 $(document).ready(function(){
 	initialize();
 	
+	var icon = '/images/broad.png';
+
 	$.getJSON( query_url, function( lines ) {
 		var sizeScaled = new google.maps.Size(24,24);
 		var sizeNormal = new google.maps.Size(24,24);
@@ -20,30 +27,48 @@ $(document).ready(function(){
 			strokeOpacity: 0.2,
 		};
 		$.each(lines, function(key, line) {
-			var points = [
-				new google.maps.LatLng(line.start.latitude,line.start.longitude),
-				new google.maps.LatLng(line.end.latitude,line.end.longitude)
-			];
-					
-			var polyline = new google.maps.Polyline({
-				map: map,
-				path:points,
-				strokeColor:"blue",
-				text:line.end.timestamp_ms,
-				strokeWeight:3,
-				strokeOpacity:0.2,
-					icons: [{
-						icon: lineSymbol,
-						offset: '100%'
-				}]
-			});
-			google.maps.event.addListener(polyline, 'mouseover', function(latlng) {
-				polyline.setOptions({strokeOpacity:1});
-			});
+			if(!intensity) {
+				var points = [
+					new google.maps.LatLng(line.start.latitude,line.start.longitude),
+					new google.maps.LatLng(line.end.latitude,line.end.longitude)
+				];
+						
+				var polyline = new google.maps.Polyline({
+					map: map,
+					path:points,
+					strokeColor:"blue",
+					text:line.end.timestamp_ms,
+					strokeWeight:3,
+					strokeOpacity:0.2,
+						icons: [{
+							icon: lineSymbol,
+							offset: '100%'
+					}]
+				});
+				google.maps.event.addListener(polyline, 'mouseover', function(latlng) {
+					polyline.setOptions({strokeOpacity:1});
+				});
 
-			google.maps.event.addListener(polyline, 'mouseout', function(latlng) {
-				polyline.setOptions({strokeOpacity:0.2});
-			});
+				google.maps.event.addListener(polyline, 'mouseout', function(latlng) {
+					polyline.setOptions({strokeOpacity:0.2});
+				});
+			} else {
+
+				var myLatlng = new google.maps.LatLng(line.start.latitude,line.start.longitude)
+				var from = new google.maps.Marker({
+					position: myLatlng,
+					map: map,
+					icon: icon,
+				});
+
+				var myLatlng = new google.maps.LatLng(line.end.latitude,line.end.longitude)
+				var to = new google.maps.Marker({
+					position: myLatlng,
+					map: map,
+					icon: icon,
+				});
+			}
+
 		});
 	});
 });
