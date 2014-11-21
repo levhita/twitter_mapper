@@ -1,23 +1,17 @@
-var map;
 var tweets_collection=[];
 var tweets_locations={};
 
-function initialize() {
-	var mapOptions = {
-		zoom: initial_zoom,
-		center: new google.maps.LatLng(initial_lat, initial_long),
-		mapTypeControl: true,
-	};
-	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-}
-
-var icon = '/images/broad.png';
-if($.urlParam('icon')!==null){
-	icon = $.urlParam('icon');
+if($.urlParam('direction')!==null){
+	query_url += "&direction="+$.urlParam('direction');
 }
 
 $(document).ready(function(){
 	initialize();
+	
+	var icon = '/images/broad.png';
+	if($.urlParam('icon')!==null){
+		icon = $.urlParam('icon');
+	}
 	$.getJSON( query_url, function( tweets ) {
 		var sizeScaled = new google.maps.Size(24,24);
 		var sizeNormal = new google.maps.Size(24,24);
@@ -29,38 +23,49 @@ $(document).ready(function(){
 				var last_location = tweets_locations[tweet.user_id].slice(-1)[0];
 				
 				if( (last_location.latitude +0.005 < tweet.latitude )
-				||  (last_location.latitude -0.005 > tweet.latitude )
-				||  (last_location.longitude+0.005 < tweet.longitude)
-				||  (last_location.longitude-0.005 > tweet.longitude) ){
+					||  (last_location.latitude -0.005 > tweet.latitude )
+					||  (last_location.longitude+0.005 < tweet.longitude)
+					||  (last_location.longitude-0.005 > tweet.longitude) ){
 					
 					var lineSymbol = {
-            			path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
-            			strokeColor: 'purple',
-            			strokeOpacity: 0.2,
-            		};
+						path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
+						strokeColor: 'purple',
+						strokeOpacity: 0.2,
+					};
 
 					var points = [
-						new google.maps.LatLng(last_location.latitude,last_location.longitude),
-						new google.maps.LatLng(tweet.latitude,tweet.longitude)
+					new google.maps.LatLng(last_location.latitude,last_location.longitude),
+					new google.maps.LatLng(tweet.latitude,tweet.longitude)
 					];
 					
 					var polyline = new google.maps.Polyline({
 						map: map,
-						path:points,strokeColor:"blue",
+						path:points,
+						strokeColor:"blue",
 						strokeWeight:3,
-						strokeOpacity:0.1,
+						strokeOpacity:0.2,
 						icons: [{
-                			icon: lineSymbol,
-                			offset: '100%'
-            			}]
+							icon: lineSymbol,
+							offset: '100%'
+						}]
+					});
+					google.maps.event.addListener(polyline, 'mouseover', function(latlng) {
+						polyline.setOptions({strokeOpacity:1});
+					});
+
+					google.maps.event.addListener(polyline, 'mouseout', function(latlng) {
+						polyline.setOptions({strokeOpacity:0.2});
 					});
 					
-					
-					
 					tweets_locations[tweet.user_id].push({'latitude':tweet.latitude, 'longitude':tweet.longitude});
-					
-					//var pinIcon = new google.maps.MarkerImage(tweet.picture, sizeNormal, null, centerImage, sizeScaled);
-					
+				}
+			}
+		});
+	});
+});
+
+//var pinIcon = new google.maps.MarkerImage(tweet.picture, sizeNormal, null, centerImage, sizeScaled);
+
 					/*var myLatlng = new google.maps.LatLng(tweet.latitude, tweet.longitude)
 					var marker = new google.maps.Marker({
 						position: myLatlng,
@@ -69,20 +74,15 @@ $(document).ready(function(){
 						icon: pinIcon
 					});
 				
-					tweets_collection.push({'tweet':tweet, 'marker':marker});*/
-					if(tweets_locations[tweet.user_id].length==2){
-						/*var myLatlng = new google.maps.LatLng(last_location.latitude, last_location.longitude)
+tweets_collection.push({'tweet':tweet, 'marker':marker});
+
+if(tweets_locations[tweet.user_id].length==2){
+	var myLatlng = new google.maps.LatLng(last_location.latitude, last_location.longitude)
 						var marker = new google.maps.Marker({
 							position: myLatlng,
 							map: map,
 							title: "@"+tweet.screen_name+":"+last_location.text,
 							icon: pinIcon
 						});
-					
-						tweets_collection.push({'tweet':tweet, 'marker':marker});*/
 					}
-				}
-			}
-		});
-	});
-});
+tweets_collection.push({'tweet':tweet, 'marker':marker});*/
