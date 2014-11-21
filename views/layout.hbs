@@ -32,24 +32,36 @@
       
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li><a href="/graphs/movements">Movements</a></li>
+          <li><a href="/movements">Movements</a></li>
           <li><a href="/graphs/plain_tweets">Plain Tweets</a></li>
-          <li><a href="/graphs/intensity">Intensity</a><li>
-          <li><a href="/graphs/intensity_small">Intensity Small</a><li>
-        </ul>
-      </div><!--/.nav-collapse -->
-    </div>
-  </nav>
-  
-  <div class="container" id="body">  
-    {{{body}}}
-  </div>
+          <li><a href="/graphs/intensity">Intensity</a></li>
+            <li><a href="/graphs/intensity_small">Intensity Small</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
 
-  <footer class="footer">
-    <div class="container">
-      <p>Test</p>
-      <p>&amp;region_lat1=<span id="region_lat1">0</span>&amp;region_lng1=<span id="region_lng1">0</span>&amp;region_lat2=<span id="region_lat2">0</span>&amp;region_lng2=<span id="region_lng2">0</span></p>
+    <div class="container" id="body">  
+      {{{body}}}
     </div>
-  </footer>
-</body>
-</html>
+
+    <footer class="footer">
+      <div class="container">
+        <form class="form-inline" role="form">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control col-xs-3" id="region" readonly>
+            </div>
+            <div class="input-group">
+              <input type="text" class="form-control col-xs-3" id="view" readonly>
+            </div>
+          </div>
+        </form>
+      </div>
+    </footer>
+
+  </body>
+  </html>
+
+
+

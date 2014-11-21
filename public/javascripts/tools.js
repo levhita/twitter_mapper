@@ -60,7 +60,8 @@ if($.urlParam('region_lat1')!==null && $.urlParam('region_lng1')!==null &&$.urlP
 
 /** Variables for region selection **/
 var currentLatLng;
-
+var point1LatLng={latitude:0,longitude:0};
+var point2LatLng={latitude:0,longitude:0};
 function initialize() {
 	
 	var mapOptions = {
@@ -74,15 +75,30 @@ function initialize() {
 	
 	google.maps.event.addDomListener(document.getElementById('map-canvas'), "mousedown", function (e) {
 		if (e.which == 1) {
-			$('#region_lat1').text(currentLatLng.lat());
-			$('#region_lng1').text(currentLatLng.lng());
+			point1LatLng={latitude:currentLatLng.lat(),longitude:currentLatLng.lng()};
 		} else if (e.which == 3) {
-			$('#region_lat2').text(currentLatLng.lat());
-			$('#region_lng2').text(currentLatLng.lng());
+			point2LatLng={latitude:currentLatLng.lat(),longitude:currentLatLng.lng()};
 		}
+		$("#region").val(
+			"&region_lat1=" + point1LatLng.latitude
+			+ "&region_lng1=" + point1LatLng.longitude
+			+ "&region_lat2=" + point2LatLng.latitude
+			+ "&region_lng2=" + point2LatLng.longitude
+			);
 	});
-
+	
 	google.maps.event.addListener(map, 'mousemove', function(mEvent) {
 		currentLatLng = mEvent.latLng;
 	});
+
+	google.maps.event.addListener(map, "center_changed", function() {
+        $("#view").val(
+        	"&latitude="  + map.getCenter().lat() +
+        	"&longitude=" + map.getCenter().lng() +
+        	"&zoom=" + map.getZoom()
+        );
+    });
 }
+$("document").ready(function(){
+
+});
