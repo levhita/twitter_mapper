@@ -99,6 +99,27 @@ function initialize() {
         );
     });
 }
+
+function distance(){
+	 //Position, decimal degrees
+ lat = 51.0
+ lon = 0.0
+
+ //Earth’s radius, sphere
+ R=6378137
+
+ //offsets in meters
+ dn = 100
+ de = 100
+
+ //Coordinate offsets in radians
+ dLat = dn/R
+ dLon = de/(R*Cos(Pi*lat/180))
+
+ //OffsetPosition, decimal degrees
+ latO = lat + dLat * 180/Pi
+ lonO = lon + dLon * 180/Pi 
+}
 $("document").ready(function(){
 
 });
