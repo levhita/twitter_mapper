@@ -35,6 +35,9 @@ if($.urlParam('as_text')!==null && $.urlParam('as_text')=="true"){
 if($.urlParam('search')!==null){
 	query_url += "&search="+$.urlParam('search');
 }
+if($.urlParam('unique')!==null){
+	query_url += "&unique="+$.urlParam('unique');
+}
 
 /** Process view windows **/
 var initial_zoom = 11;

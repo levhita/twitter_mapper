@@ -36,9 +36,9 @@ router.get('/', function(req, res) {
 	}
 
 	var unique = false;
-	/*if(typeof req.query.unique !=='undefined'){
+	if(typeof req.query.unique !=='undefined'){
 		unique = parseFloat(req.query.unique);
-	}*/
+	}
 
 	if(typeof req.query.user_id !=='undefined'){
 		query.user_id = req.query.user_id;
@@ -74,21 +74,23 @@ router.get('/', function(req, res) {
 							var latitude_diff  = last_location.latitude - tweet.latitude;
 							var longitude_diff = last_location.longitude - tweet.longitude;
 							if( Math.abs(latitude_diff) > unique  || Math.abs(longitude_diff) > unique ){
-												tweets_locations[tweet.user_id].push(tweet);
+								tweets_locations[tweet.user_id].push(tweet);
 							}
 						} else{
-							tweets_locations[tweet.user_id].unshift(tweet);
+							tweets_locations[tweet.user_id].push(tweet);
 						}
 					}
 				} else {
+					var results = [];
+
+					for (var user_id in tweets_locations) {
+						if (user_id === 'length' || !tweets_locations.hasOwnProperty(user_id)) {continue;} 
+						for(i=0; i<tweets_locations[user_id].length;i++) {
+							results.push(tweets_locations[user_id][i]);
+						}
+					}
 					res.setHeader('Content-Type', 'application/json');
-					res.write("[");
-					tweets_locations.forEach( function(tweet){
-						console.log(tweet);
-						res.write(JSON.stringify(tweet));
-						res.write(",");
-					});
-					res.end("]");
+					res.end(JSON.stringify(results));
 				}
 			});
 		} else {
