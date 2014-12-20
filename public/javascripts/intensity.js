@@ -8,8 +8,10 @@ $(document).ready(function(){
 	
 	$.getJSON( "/"+query_url, function( tweets ) {
 		var heatmapData = [];
-		for(var x=0; x < tweets.length; x++){
-			heatmapData.push(new google.maps.LatLng(tweets[x].latitude, tweets[x].longitude));
+		for(var x=0; x < tweets.length; x++) {
+			for(var y=0; y < tweets[x].length;y++) {
+				heatmapData.push(new google.maps.LatLng(tweets[x][y].latitude, tweets[x][y].longitude));
+			}
 		}
 		
 		heatmap = new google.maps.visualization.HeatmapLayer({

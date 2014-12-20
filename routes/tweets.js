@@ -4,8 +4,6 @@ var router = express.Router();
 /* GET twitts listing. */
 router.get('/', function(req, res) {
 	var tweets_collection = db.collection('twitts');
-	var results = [];
-	var results_string = "";
 	var query = {};
 	var options = {'sort': [['_id', 'desc']]};
 	
@@ -31,10 +29,16 @@ router.get('/', function(req, res) {
 	if(typeof req.query.search !=='undefined'){
 		query.text = {$regex : ".*"+req.query.search+".*"}
 	}
+	
 	var as_text=false;
 	if(typeof req.query.as_text !=='undefined'){
 		as_text=true;
 	}
+
+	var unique = false;
+	/*if(typeof req.query.unique !=='undefined'){
+		unique = parseFloat(req.query.unique);
+	}*/
 
 	if(typeof req.query.user_id !=='undefined'){
 		query.user_id = req.query.user_id;
@@ -54,15 +58,41 @@ router.get('/', function(req, res) {
 
 	tweets_collection.find(query, options, function(err, tweets) {
 		if(!as_text){
+			var tweets_locations = [];
+			var higher=0;
 			tweets.each(function(err, tweet) {
 				if (tweet !== null) {
-					results.unshift(tweet);
+					tweet.latitude = parseFloat(tweet.latitude);
+					tweet.longitude = parseFloat(tweet.longitude);
+					
+					if(typeof tweets_locations[tweet.user_id] == 'undefined'){
+						/** First locations known for this user **/
+						tweets_locations[tweet.user_id]=[tweet];
+					} else {
+						if(unique !== false){
+							var last_location  = tweets_locations[tweet.user_id].slice(-1)[0];
+							var latitude_diff  = last_location.latitude - tweet.latitude;
+							var longitude_diff = last_location.longitude - tweet.longitude;
+							if( Math.abs(latitude_diff) > unique  || Math.abs(longitude_diff) > unique ){
+												tweets_locations[tweet.user_id].push(tweet);
+							}
+						} else{
+							tweets_locations[tweet.user_id].unshift(tweet);
+						}
+					}
 				} else {
 					res.setHeader('Content-Type', 'application/json');
-					res.end(JSON.stringify(results));
-		    }
+					res.write("[");
+					tweets_locations.forEach( function(tweet){
+						console.log(tweet);
+						res.write(JSON.stringify(tweet));
+						res.write(",");
+					});
+					res.end("]");
+				}
 			});
 		} else {
+			var results_string = "";
 			tweets.each(function(err, tweet) {
 				if (tweet !== null) {
 					results_string +="  "+tweet.text;

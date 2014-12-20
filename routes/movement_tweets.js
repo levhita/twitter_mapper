@@ -100,7 +100,7 @@ router.get('/', function(req, res) {
 
 								if (direction=='both') {
 									if ( i>0 ) {
-										if ( lines.length==0 ) { //first line
+										if ( lines.length==0 ) { //First Line
 											lines.push({
 												'start': tweets_locations[user_id][i-1],
 												'end': tweets_locations[user_id][i],
