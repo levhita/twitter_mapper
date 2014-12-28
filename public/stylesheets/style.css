@@ -10,8 +10,23 @@ body {
 	width:100%;
 	padding: 0px
 }
+#map-container {
+	height:100%;
+	padding:0px;
+	padding-top: 50px;
+}
+#tools-belt {
+	height:100%;
+	padding:0px;
+	padding-top: 60px;
+}
+#map-canvas {
+	height: 100%;
+	width: 100%;
+	position:relative;
+}
 
-div#body,#map-canvas {
+div#body {
 	height: 100%;
 	width: 100%;
 	margin: 0px;
@@ -21,12 +36,12 @@ div#body,#map-canvas {
 /* Sticky footer styles
 -------------------------------------------------- */
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #f5f5f5;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	/* Set the fixed height of the footer here */
+	height: 60px;
+	background-color: #f5f5f5;
 }
 .footer .container{
 	margin:10px;
